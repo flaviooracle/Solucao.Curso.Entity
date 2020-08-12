@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Solucao.Curso.Entity.Core\Solucao.Curso.Entity.Core.csproj" />
+    <ProjectReference Include="..\..\Solucao.Curso.Entity.Repository\Solucao.Curso.Entity.Repository.csproj" />
+  </ItemGroup>
+
+
+</Project>

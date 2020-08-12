@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
-namespace Solucao.Curso.Entity.Core.Models
+namespace Solucao.Curso.Entity.Dominio.Models
 {
     public class IdentidadeSecreta
     {

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Solucao.Curso.Entity.Core.Models
+namespace Solucao.Curso.Entity.Dominio.Models
 {
     public class Batalha
     {

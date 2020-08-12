@@ -2,25 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Solucao.Curso.Entity.Core.Data;
+using Solucao.Curso.Entity.Repository.Data;
 
-namespace Solucao.Curso.Entity.Core.Migrations
+namespace Solucao.Curso.Entity.Repository.Migrations
 {
     [DbContext(typeof(HeroisContext))]
-    [Migration("20200807043610_HeroisBatalhas_Identidade")]
-    partial class HeroisBatalhas_Identidade
+    partial class HeroisContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.Arma", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.Arma", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +38,7 @@ namespace Solucao.Curso.Entity.Core.Migrations
                     b.ToTable("Armas");
                 });
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.Batalha", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.Batalha", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +53,7 @@ namespace Solucao.Curso.Entity.Core.Migrations
                     b.ToTable("Batalhas");
                 });
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.Heroi", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.Heroi", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +68,7 @@ namespace Solucao.Curso.Entity.Core.Migrations
                     b.ToTable("Herois");
                 });
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.HeroisBatalha", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.HeroisBatalha", b =>
                 {
                     b.Property<int>("BatalhaId")
                         .HasColumnType("int");
@@ -85,7 +83,7 @@ namespace Solucao.Curso.Entity.Core.Migrations
                     b.ToTable("HeroisBatalhas");
                 });
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.IdentidadeSecreta", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.IdentidadeSecreta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,35 +104,35 @@ namespace Solucao.Curso.Entity.Core.Migrations
                     b.ToTable("IdentidadesSecretas");
                 });
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.Arma", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.Arma", b =>
                 {
-                    b.HasOne("Solucao.Curso.Entity.Core.Models.Heroi", "Heroi")
+                    b.HasOne("Solucao.Curso.Entity.Dominio.Models.Heroi", "Heroi")
                         .WithMany("Armas")
                         .HasForeignKey("HeroiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.HeroisBatalha", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.HeroisBatalha", b =>
                 {
-                    b.HasOne("Solucao.Curso.Entity.Core.Models.Batalha", "Batalha")
+                    b.HasOne("Solucao.Curso.Entity.Dominio.Models.Batalha", "Batalha")
                         .WithMany("HeroisBatalhas")
                         .HasForeignKey("BatalhaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Solucao.Curso.Entity.Core.Models.Heroi", "Heroi")
+                    b.HasOne("Solucao.Curso.Entity.Dominio.Models.Heroi", "Heroi")
                         .WithMany("HeroisBatalhas")
                         .HasForeignKey("HeroiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Solucao.Curso.Entity.Core.Models.IdentidadeSecreta", b =>
+            modelBuilder.Entity("Solucao.Curso.Entity.Dominio.Models.IdentidadeSecreta", b =>
                 {
-                    b.HasOne("Solucao.Curso.Entity.Core.Models.Heroi", "Heroi")
+                    b.HasOne("Solucao.Curso.Entity.Dominio.Models.Heroi", "Heroi")
                         .WithOne("Identidade")
-                        .HasForeignKey("Solucao.Curso.Entity.Core.Models.IdentidadeSecreta", "HeroiId")
+                        .HasForeignKey("Solucao.Curso.Entity.Dominio.Models.IdentidadeSecreta", "HeroiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

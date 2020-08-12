@@ -1,5 +1,4 @@
-﻿
-namespace Solucao.Curso.Entity.Core.Models
+﻿namespace Solucao.Curso.Entity.Repository.Models
 {
     public class Arma
     {

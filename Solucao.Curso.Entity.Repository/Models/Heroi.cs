@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 
-namespace Solucao.Curso.Entity.Core.Models
+namespace Solucao.Curso.Entity.Repository.Models
 {
     public class Heroi
     {
