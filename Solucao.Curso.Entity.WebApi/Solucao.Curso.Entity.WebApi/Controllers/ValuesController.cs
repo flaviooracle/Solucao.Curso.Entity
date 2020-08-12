@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Solucao.Curso.Entity.Dominio.Models;
 using Solucao.Curso.Entity.Repository.Data;
 using System.Collections;
@@ -26,6 +27,22 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
             // return Ok(_context.Herois.ToList());
             return Ok((from heroi in _context.Herois select heroi).ToList());
         }
+
+        // GET: api/ValuesController
+        [HttpGet("query/{nome}")]
+        public ActionResult LGet(string nome)
+        {
+            var h = _context.Herois.
+                             Where(x => EF.Functions.Like(x.Nome, $"%{nome}%")) // uso do like na query - performance na busca dos dados
+                             .OrderBy(x => x.Nome)
+                             // .OrderByDescending(x => x.Nome) ordenando decrescente
+                             //.SingleOrDefault();  // se retornar mais de um item gera uma exceção
+                             //.FirstOrDefault();  // necessidade de retornar um item
+                             .LastOrDefault(); //  retorna o ultimo de uma lista 
+
+            return Ok(h);
+        }
+
 
         [HttpGet("ListaGet/")]
         public IEnumerable<Heroi> ListaGet()
