@@ -7,7 +7,7 @@ using System.Linq;
 namespace Solucao.Curso.Entity.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

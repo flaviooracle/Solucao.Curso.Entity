@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Solucao.Curso.Entity.Core.Operation;
+using Solucao.Curso.Entity.Core.Operation.Interface;
 using Solucao.Curso.Entity.Repository.Data;
 
 namespace Solucao.Curso.Entity.WebApi
@@ -28,6 +30,8 @@ namespace Solucao.Curso.Entity.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IHeroiExecute, HeroiExecute>();
 
             services.AddDbContext<HeroisContext>( options =>
             { 
