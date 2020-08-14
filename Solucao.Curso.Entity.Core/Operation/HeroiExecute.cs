@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Solucao.Curso.Entity.Core.Operation.Interface;
 using Solucao.Curso.Entity.Dominio.DataContracts.Request;
 using Solucao.Curso.Entity.Dominio.DataContracts.Response;
@@ -8,6 +9,7 @@ using Solucao.Curso.Entity.Dominio.Models;
 using Solucao.Curso.Entity.Repository.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,27 +33,25 @@ namespace Solucao.Curso.Entity.Core.Operation
             throw new NotImplementedException();
         }
 
-        public IEnumerable<HeroiResponse> ListHerois()
+        public IEnumerable<Heroi> ListHerois()
         {
-            throw new NotImplementedException();
+            return _context.Herois.ToList();
+        }
+
+        public HeroiResponse ListHerois(int id)
+        {
+            var response = new HeroiResponse(); 
+            response.heroi = _context.Herois.Find(id);
+            return response;
+            
         }
 
         public HeroiResponse PostHeroi(HeroiRequest request)
         {
             try
             {
-                var response = new HeroiResponse()
-                {
-                    heroi = new Heroi()
-                    {
-                        Nome = request.heroi.Nome,
-                        Armas = new List<Arma>()
-                        {
-                            new Arma{Nome = request.heroi.Armas[0].Nome},
-                            new Arma{Nome = request.heroi.Armas[1].Nome}
-                        }
-                    }
-                };
+                var response = new HeroiResponse();
+                response.heroi = request.heroi;
 
                 _context.Herois.Add(response.heroi);
                 _context.SaveChanges();
@@ -67,32 +67,21 @@ namespace Solucao.Curso.Entity.Core.Operation
 
         public HeroiResponse UpdateHeroi(HeroiRequest request)
         {
+            var response = new HeroiResponse();
             try
             {
-                var response = new HeroiResponse()
+                if (_context.Herois.AsNoTracking().FirstOrDefault(h => h.Id == request.heroi.Id) != null)
                 {
-                    heroi = new Heroi()
-                    {
-                        Nome = request.heroi.Nome,
-                        Id = request.heroi.Id,
-                        Armas = new List<Arma>()
-                        {
-                            new Arma{Id = request.heroi.Armas[0].Id, Nome = request.heroi.Armas[0].Nome},
-                            new Arma{Id = request.heroi.Armas[1].Id, Nome = request.heroi.Armas[1].Nome}
-                        }
-                    }
-                };
-
-                _context.Herois.Update(response.heroi);
-                _context.SaveChanges();
-
-                return response;
+                    _context.Herois.Update(request.heroi);
+                    _context.SaveChanges();
+                    response.heroi = request.heroi;
+                }
             }
             catch (Exception e)
             {
-                return null;
+            
             }
-
+            return response;
         }
     }
 }

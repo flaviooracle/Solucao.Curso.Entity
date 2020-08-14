@@ -3,8 +3,8 @@ using Solucao.Curso.Entity.Dominio.Models;
 
 namespace Solucao.Curso.Entity.Dominio.DataContracts.Request
 {
-    public class HeroiRequest: IHeroi
+    public class BatalhaRequest: IBatalha
     {
-        public Heroi heroi { get; set; }
+        public Batalha batalha { get; set; }
     }
 }

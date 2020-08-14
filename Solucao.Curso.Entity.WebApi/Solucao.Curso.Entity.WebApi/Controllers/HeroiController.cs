@@ -25,16 +25,15 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // GET: api/<HeroiController>
         [HttpGet]
-        public ActionResult Get()
+        public IEnumerable<Heroi> Get()
         {
-            List<string> response = new List<string>();
             try
             {
-                return Ok();
+                return _heroiExecute.ListHerois();
             }
             catch (Exception e)
             {
-                return BadRequest($"erro: {e}");
+                return null;
             }
 
         }
@@ -42,14 +41,14 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // GET api/<HeroiController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public HeroiResponse Get(int id)
         {
-            return "value";
+            return _heroiExecute.ListHerois(id);
         }
 
         // POST api/<HeroiController>
         [HttpPost]
-        public ActionResult Post([FromBody] HeroiRequest request)
+        public IActionResult Post([FromBody] HeroiRequest request)
         {
             try
             {
@@ -65,13 +64,20 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // PUT api/<HeroiController>/5
         [HttpPut]
-        public ActionResult Put(int id, [FromBody] HeroiRequest request)
+        public IActionResult Put([FromBody] HeroiRequest request)
         {
             try
             {
+                
                 var response = _heroiExecute.UpdateHeroi(request);
 
-                return Ok();
+                if (response.heroi != null) 
+                {
+                    var LHeroi = _heroiExecute.ListHerois(response.heroi.Id).heroi;
+                    return Ok("O Heroi: " + LHeroi.Nome + " foi atualizado  !!!!");
+                }
+                else
+                    return Ok("Erro na Atualização  !!!!");
             }
             catch (Exception e)
             {

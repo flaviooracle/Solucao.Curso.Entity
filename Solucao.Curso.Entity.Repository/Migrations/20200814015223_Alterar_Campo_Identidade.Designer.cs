@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Solucao.Curso.Entity.Repository.Data;
 
 namespace Solucao.Curso.Entity.Repository.Migrations
 {
     [DbContext(typeof(HeroisContext))]
-    partial class HeroisContextModelSnapshot : ModelSnapshot
+    [Migration("20200814015223_Alterar_Campo_Identidade")]
+    partial class Alterar_Campo_Identidade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

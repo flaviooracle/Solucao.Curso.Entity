@@ -32,6 +32,7 @@ namespace Solucao.Curso.Entity.WebApi
             services.AddControllers();
 
             services.AddScoped<IHeroiExecute, HeroiExecute>();
+            services.AddScoped<IBatalhaExecute, BatalhaExecute>();
 
             services.AddDbContext<HeroisContext>( options =>
             { 
