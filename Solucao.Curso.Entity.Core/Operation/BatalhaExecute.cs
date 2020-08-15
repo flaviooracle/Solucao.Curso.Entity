@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Solucao.Curso.Entity.Core.Operation.Interface;
+using Solucao.Curso.Entity.Core.Service.Interface;
 using Solucao.Curso.Entity.Dominio.DataContracts.Request;
 using Solucao.Curso.Entity.Dominio.DataContracts.Response;
 using Solucao.Curso.Entity.Dominio.Models;
@@ -8,15 +9,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Solucao.Curso.Entity.Core.Operation
 {
     public class BatalhaExecute : IBatalhaExecute
     {
-        private readonly HeroisContext _context;
-        public BatalhaExecute(HeroisContext context)
+        private readonly IEFCoreRepository _eFCoreRepository;
+
+        public BatalhaExecute(IEFCoreRepository eFCoreRepository)
         {
-            _context = context;
+            _eFCoreRepository = eFCoreRepository;
         }
 
         public BatalhaResponse DeleteBatalha(int id)
@@ -28,25 +31,20 @@ namespace Solucao.Curso.Entity.Core.Operation
         {
             var response = new BatalhaResponse()
             {
-                batalha = _context.Batalhas.Find(id)
+              //  batalha = _eFCoreRepository.Find(id)
             };
             return response;    
         }
 
         public IEnumerable<Batalha> ListBatalhas()
         {
-            return _context.Batalhas.ToList();
+            return new List<Batalha>(); // _eFCoreRepository.Batalhas.ToList();
         }
 
-        public BatalhaResponse PostBatalha(BatalhaRequest request)
+        public async Task<bool> PostBatalha(BatalhaRequest request)
         {
-            var response = new BatalhaResponse();
-            response.batalha = request.batalha;
-
-            _context.Batalhas.Add(request.batalha);
-            _context.SaveChanges();
-
-            return response;
+            _eFCoreRepository.Add(request.batalha);
+            return await _eFCoreRepository.SaveChangeAsync();
         }
 
         public BatalhaResponse UpdateBatalha(BatalhaRequest request)
@@ -54,12 +52,12 @@ namespace Solucao.Curso.Entity.Core.Operation
             var response = new BatalhaResponse();
             
 
-            if (_context.Batalhas.AsNoTracking().FirstOrDefault(h => h.Id == request.batalha.Id) != null)
-            {
-                _context.Batalhas.Update(request.batalha);
-                _context.SaveChanges();
-                response.batalha = request.batalha;
-            }
+            //if (_eFCoreRepository.Batalhas.AsNoTracking().FirstOrDefault(h => h.Id == request.batalha.Id) != null)
+            //{
+            //    _eFCoreRepository.Batalhas.Update(request.batalha);
+            //    _eFCoreRepository.SaveChanges();
+            //    response.batalha = request.batalha;
+            //}
            
             return response;
             

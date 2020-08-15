@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Solucao.Curso.Entity.Core.Operation;
 using Solucao.Curso.Entity.Core.Operation.Interface;
+using Solucao.Curso.Entity.Core.Service;
+using Solucao.Curso.Entity.Core.Service.Interface;
 using Solucao.Curso.Entity.Repository.Data;
 
 namespace Solucao.Curso.Entity.WebApi
@@ -31,13 +33,18 @@ namespace Solucao.Curso.Entity.WebApi
         {
             services.AddControllers();
 
-            services.AddScoped<IHeroiExecute, HeroiExecute>();
-            services.AddScoped<IBatalhaExecute, BatalhaExecute>();
-
             services.AddDbContext<HeroisContext>( options =>
             { 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            
+            services.AddScoped<IHeroiExecute, HeroiExecute>();
+            services.AddScoped<IBatalhaExecute, BatalhaExecute>();
+            services.AddScoped<IEFCoreRepository, EFCoreRepository>();
+
+            services.AddMvcCore().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore);    
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

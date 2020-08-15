@@ -4,6 +4,7 @@ using Solucao.Curso.Entity.Dominio.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Solucao.Curso.Entity.Core.Operation.Interface
 {
@@ -11,7 +12,7 @@ namespace Solucao.Curso.Entity.Core.Operation.Interface
     {
         IEnumerable<Batalha> ListBatalhas();
         BatalhaResponse ListBatalha(int id);
-        BatalhaResponse PostBatalha(BatalhaRequest request);
+        Task<bool> PostBatalha(BatalhaRequest request);
         BatalhaResponse DeleteBatalha(int id);
         BatalhaResponse UpdateBatalha(BatalhaRequest request);
     }

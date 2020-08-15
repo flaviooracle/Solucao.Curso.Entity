@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Solucao.Curso.Entity.Core.Operation.Interface;
 using Solucao.Curso.Entity.Dominio.DataContracts.Request;
 using Solucao.Curso.Entity.Dominio.DataContracts.Response;
 using Solucao.Curso.Entity.Dominio.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Solucao.Curso.Entity.WebApi.Controllers
-{   
+{
     [Route("api/heroi")]
     [ApiController]
     public class HeroiController : ControllerBase
@@ -25,17 +23,11 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // GET: api/<HeroiController>
         [HttpGet]
-        public IEnumerable<Heroi> Get()
+        public async Task<IEnumerable<Heroi>> Get()  // colocar o retono em dto para retorno
         {
-            try
-            {
-                return _heroiExecute.ListHerois();
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-
+            var res = await _heroiExecute.ListHerois();
+           // res = res.Where(x => x.Id < 6).ToList();
+            return res;
         }
 
 
@@ -48,13 +40,11 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // POST api/<HeroiController>
         [HttpPost]
-        public IActionResult Post([FromBody] HeroiRequest request)
+        public async Task<IActionResult> Post([FromBody] HeroiRequest request)
         {
             try
             {
-                var response = _heroiExecute.PostHeroi(request);
-
-                return Ok();
+                return Ok(await _heroiExecute.PostHeroi(request));
             }
             catch (Exception e)
             {
@@ -64,16 +54,13 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // PUT api/<HeroiController>/5
         [HttpPut]
-        public IActionResult Put([FromBody] HeroiRequest request)
+        public async Task<IActionResult> Put([FromBody] HeroiRequest request)
         {
             try
             {
-                
-                var response = _heroiExecute.UpdateHeroi(request);
-
-                if (response.heroi != null) 
+                if (await _heroiExecute.UpdateHeroi(request)) 
                 {
-                    var LHeroi = _heroiExecute.ListHerois(response.heroi.Id).heroi;
+                    var LHeroi = _heroiExecute.ListHerois(request.heroi.Id).heroi;
                     return Ok("O Heroi: " + LHeroi.Nome + " foi atualizado  !!!!");
                 }
                 else
