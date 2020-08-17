@@ -19,21 +19,28 @@ namespace Solucao.Curso.Entity.Core.Operation
             _eFCoreRepository = eFCoreRepository;       
         }
 
-        public HeroiResponse DeleteHeroi(int id)
+        public async Task<bool> DeleteHeroi(int id)
         {
-            throw new NotImplementedException();
+            var response = await ListHeroi(id);
+            if (response.heroi.Id == id)
+            {
+                _eFCoreRepository.Delete<Heroi>(response.heroi);
+                _eFCoreRepository.SaveChangeAsync();
+                return true;
+            }
+            return false;
         }
 
-        public async Task<List<Heroi>> ListHerois()
+        public async Task<List<Heroi>> ListHerois(bool incluirBatalha = true)
         {
-            var res = await _eFCoreRepository.GetAllHerois();
+            var res = await _eFCoreRepository.GetAllHerois(incluirBatalha);
             return res.ToList();
         }
 
-        public HeroiResponse ListHerois(int id)
+        public async Task<HeroiResponse> ListHeroi(int id, bool incluirBatalha = true)
         {
             var response = new HeroiResponse(); 
-          //  response.heroi = _eFCoreRepository.Herois.Find(id);
+            response.heroi = await _eFCoreRepository.GetHeroi(id, incluirBatalha);
             return response;
         }
 
@@ -45,10 +52,8 @@ namespace Solucao.Curso.Entity.Core.Operation
 
         public async Task<bool> UpdateHeroi(HeroiRequest request)
         {
-            //this.eFCoreRepository.Herois.AsNoTracking().FirstOrDefault(h => h.Id == request.heroi.Id) != null)
             _eFCoreRepository.Update(request.heroi);
              return await _eFCoreRepository.SaveChangeAsync();
-
         }
     }
 }

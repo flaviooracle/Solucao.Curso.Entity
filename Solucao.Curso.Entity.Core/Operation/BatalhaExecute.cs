@@ -22,45 +22,40 @@ namespace Solucao.Curso.Entity.Core.Operation
             _eFCoreRepository = eFCoreRepository;
         }
 
-        public BatalhaResponse DeleteBatalha(int id)
+        public async Task<bool> DeleteBatalha(int id)
         {
-            throw new NotImplementedException();
+            var response = await ListBatalha(id);
+            if ( response.Batalha.Id == id)
+            {
+                _eFCoreRepository.Delete<Batalha>(response.Batalha);
+                _eFCoreRepository.SaveChangeAsync();
+                return true;
+            }
+            return false;
         }
 
-        public BatalhaResponse ListBatalha(int id)
+        public async Task<BatalhaResponse> ListBatalha(int id)
         {
-            var response = new BatalhaResponse()
-            {
-              //  batalha = _eFCoreRepository.Find(id)
-            };
+            var response = new BatalhaResponse();
+            response.Batalha = await _eFCoreRepository.GetBatalha(id);
             return response;    
         }
 
-        public IEnumerable<Batalha> ListBatalhas()
+        public async Task<IEnumerable<Batalha>> ListBatalhas()
         {
-            return new List<Batalha>(); // _eFCoreRepository.Batalhas.ToList();
+            return await _eFCoreRepository.GetAllBatalhas();
         }
 
         public async Task<bool> PostBatalha(BatalhaRequest request)
         {
-            _eFCoreRepository.Add(request.batalha);
+            _eFCoreRepository.Add(request.Batalha);
             return await _eFCoreRepository.SaveChangeAsync();
         }
 
-        public BatalhaResponse UpdateBatalha(BatalhaRequest request)
+        public async Task<bool> UpdateBatalha(BatalhaRequest request)
         {
-            var response = new BatalhaResponse();
-            
-
-            //if (_eFCoreRepository.Batalhas.AsNoTracking().FirstOrDefault(h => h.Id == request.batalha.Id) != null)
-            //{
-            //    _eFCoreRepository.Batalhas.Update(request.batalha);
-            //    _eFCoreRepository.SaveChanges();
-            //    response.batalha = request.batalha;
-            //}
-           
-            return response;
-            
+            _eFCoreRepository.Update(request.Batalha);
+            return await _eFCoreRepository.SaveChangeAsync();
         }
     }
 }

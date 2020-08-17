@@ -23,9 +23,9 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // GET: api/<HeroiController>
         [HttpGet]
-        public async Task<IEnumerable<Heroi>> Get()  // colocar o retono em dto para retorno
+        public async Task<IEnumerable<Heroi>> Get(bool incluirBatalha = true)  // colocar o retono em dto para retorno
         {
-            var res = await _heroiExecute.ListHerois();
+            var res = await _heroiExecute.ListHerois(incluirBatalha);
            // res = res.Where(x => x.Id < 6).ToList();
             return res;
         }
@@ -33,9 +33,9 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // GET api/<HeroiController>/5
         [HttpGet("{id}")]
-        public HeroiResponse Get(int id)
+        public async Task<HeroiResponse> Get(int id, bool incluirBatalha = true)
         {
-            return _heroiExecute.ListHerois(id);
+            return await _heroiExecute.ListHeroi(id,incluirBatalha);
         }
 
         // POST api/<HeroiController>
@@ -56,26 +56,24 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] HeroiRequest request)
         {
-            try
-            {
-                if (await _heroiExecute.UpdateHeroi(request)) 
-                {
-                    var LHeroi = _heroiExecute.ListHerois(request.heroi.Id).heroi;
-                    return Ok("O Heroi: " + LHeroi.Nome + " foi atualizado  !!!!");
-                }
-                else
-                    return Ok("Erro na Atualização  !!!!");
-            }
-            catch (Exception e)
-            {
-                return BadRequest($"erro: {e}");
-            }
+        if (await _heroiExecute.UpdateHeroi(request)) 
+        {
+            var LHeroi = await _heroiExecute.ListHeroi(request.heroi.Id,true);
+            return Ok("O Heroi: " + LHeroi.heroi.Nome + " foi atualizado  !!!!");
+        }
+        else
+            return Ok("Erro na Atualização  !!!!");
         }
 
         // DELETE api/<HeroiController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
         {
+            if (await _heroiExecute.DeleteHeroi(id))
+            {
+                return Ok("O Heroi foi excluid !!!!");
+            }
+            return Ok("Erro na Exclusão !!!!");
         }
     }
 }

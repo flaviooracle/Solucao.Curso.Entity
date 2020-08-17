@@ -10,10 +10,10 @@ namespace Solucao.Curso.Entity.Core.Operation.Interface
 {
     public interface IBatalhaExecute
     {
-        IEnumerable<Batalha> ListBatalhas();
-        BatalhaResponse ListBatalha(int id);
+        Task<IEnumerable<Batalha>> ListBatalhas();
+        Task<BatalhaResponse> ListBatalha(int id);
         Task<bool> PostBatalha(BatalhaRequest request);
-        BatalhaResponse DeleteBatalha(int id);
-        BatalhaResponse UpdateBatalha(BatalhaRequest request);
+        Task<bool> DeleteBatalha(int id);
+        Task<bool> UpdateBatalha(BatalhaRequest request);
     }
 }

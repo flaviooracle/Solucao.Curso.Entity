@@ -11,7 +11,10 @@ namespace Solucao.Curso.Entity.Core.Service.Interface
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangeAsync();
 
-        Task<Heroi[]> GetAllHerois();
+        Task<Heroi[]> GetAllHerois(bool incluirBatalha);
+        Task<Heroi> GetHeroi(int id, bool incluirBatalha);
+        Task<IEnumerable<Batalha>> GetAllBatalhas();
+        Task<Batalha> GetBatalha(int id);
 
     }
 }

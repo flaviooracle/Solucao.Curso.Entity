@@ -5,6 +5,6 @@ namespace Solucao.Curso.Entity.Dominio.DataContracts.Response
 {
     public class BatalhaResponse: IBatalha
     {
-        public Batalha batalha { get; set; }
+        public Batalha Batalha { get; set; }
     }
 }

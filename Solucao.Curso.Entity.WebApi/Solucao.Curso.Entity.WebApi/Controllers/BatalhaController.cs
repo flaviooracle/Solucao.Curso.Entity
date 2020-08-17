@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Solucao.Curso.Entity.Core.Operation.Interface;
 using Solucao.Curso.Entity.Dominio.DataContracts.Request;
+using Solucao.Curso.Entity.Dominio.DataContracts.Response;
 using Solucao.Curso.Entity.Dominio.Models;
 using System.Collections.Generic;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Threading.Tasks;
 
 namespace Solucao.Curso.Entity.WebApi.Controllers
 {
@@ -20,44 +20,50 @@ namespace Solucao.Curso.Entity.WebApi.Controllers
 
         // GET: api/<BatalhaController>
         [HttpGet]
-        public IEnumerable<Batalha> Get()
+        public async Task<IEnumerable<Batalha>> GetBatalhas()
         {
-            return _batalhaExecute.ListBatalhas();
+            return await _batalhaExecute.ListBatalhas();
         }
 
         // GET api/<BatalhaController>/5
         [HttpGet("{id}")]
-        public Batalha Get(int id)
+        public async Task<BatalhaResponse> GetBatalha(int id)
         {
-            return _batalhaExecute.ListBatalha(id).batalha;
+            return await _batalhaExecute.ListBatalha(id);
         }
 
         // POST api/<BatalhaController>
         [HttpPost]
-        public IActionResult Post([FromBody] BatalhaRequest request)
+        public async Task<IActionResult> Post([FromBody] BatalhaRequest request)
         {
-            var response = _batalhaExecute.PostBatalha(request);
-            return Ok("Gravado");
+            if (await _batalhaExecute.PostBatalha(request))
+            {
+                return Ok("Gravado");
+            }
+            return Ok("Problema Gravação");
         }
 
         // PUT api/<BatalhaController>/5
         [HttpPut]
-        public IActionResult Put([FromBody] BatalhaRequest request)
-        {
-            var response = _batalhaExecute.UpdateBatalha(request);
-            
-            if (response != null)
+        public async Task<IActionResult> Put([FromBody] BatalhaRequest request)
+        {            
+            if (await _batalhaExecute.UpdateBatalha(request))
             {
-                var LBatalha = _batalhaExecute.ListBatalha(response.batalha.Id).batalha;
-                return Ok("A Batalha: " + LBatalha.Nome + " foi atualizado  !!!!");
+                var LBatalha = await _batalhaExecute.ListBatalha(request.Batalha.Id);
+                return Ok("A Batalha: " + LBatalha.Batalha.Nome + " foi atualizado  !!!!");
             }
             return Ok("Erro ao atualizar");
         }
 
         // DELETE api/<BatalhaController>/5
         [HttpDelete]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            if (await _batalhaExecute.DeleteBatalha(id))
+            {   
+                return Ok("A Batalha Excluida com Sucesso !!");
+            }
+            return Ok("Erro ao tentar excluir batalha");
         }
     }
 }
